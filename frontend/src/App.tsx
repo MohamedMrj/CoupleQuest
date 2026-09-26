@@ -8,12 +8,23 @@ type Adventure = {
 
 function App() {
   const [adventure, setAdventure] = useState<Adventure | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   async function getAdventure() {
-    const response = await fetch("http://localhost:8000/adventure");
-    const data = await response.json();
+    setLoading(true);
+    setError(null);
 
-    setAdventure(data);
+    try {
+      const response = await fetch("http://192.168.0.137:8000/adventure");
+
+      const data = await response.json();
+      setAdventure(data);
+    } catch {
+      setError("Could not get an adventure. Please try again.");
+    }
+
+    setLoading(false);
   }
 
   return (
@@ -21,6 +32,18 @@ function App() {
       <h1>CoupleQuest</h1>
 
       <button onClick={getAdventure}>Give us an adventure</button>
+      {loading && (
+        <div>
+          <h2>Loading adventure...</h2>
+        </div>
+      )}
+
+      {error && (
+        <div>
+          <h2>Error</h2>
+          <p>{error}</p>
+        </div>
+      )}
 
       {adventure && (
         <div>
