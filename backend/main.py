@@ -1,6 +1,8 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
+#from API.weather.weather import get_weather
+
 app = FastAPI()
 
 app.add_middleware(
@@ -18,5 +20,8 @@ def get_adventure():
     return {
         "activity": "Go for a walk",
         "food": "Try a new restaurant",
-        "budget": 500
+        "budget": 500,
+        #"weather": get_weather(),
     }
+    
+    
