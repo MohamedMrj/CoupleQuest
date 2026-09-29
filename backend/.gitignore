@@ -1,4 +1,4 @@
-API/weather/api_key.py
+API/api_keys
 __pycache__/
 *.py[cod]
 .venv/

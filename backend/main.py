@@ -1,9 +1,12 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-#from API.weather.weather import get_weather
+from API.weather.weather import get_weather_condition,get_temprature
+
 
 app = FastAPI()
+latitude = "58.5942"
+longitude = "16.1826"
 
 app.add_middleware(
     CORSMiddleware,
@@ -21,7 +24,6 @@ def get_adventure():
         "activity": "Go for a walk",
         "food": "Try a new restaurant",
         "budget": 500,
-        #"weather": get_weather(),
+        "temprature": get_temprature(latitude, longitude),
+        "weather": get_weather_condition(latitude, longitude)
     }
-    
-    

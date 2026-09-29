@@ -1,17 +1,30 @@
-import json
 import requests
-try:
-    from .api_key import API_KEY
-except ImportError:
-    from api_key import API_KEY
+from ..api_keys.weather_api_key import API_KEY
 
 
-def get_weather(latitiude,longitude):
-    response = requests.get(
-        f"https://api.openweathermap.org/data/2.5/weather?lat={latitiude}&lon={longitude}&units=metric&appid={API_KEY}"
-    )
-    return response.json()["main"]["temp"]
+def get_temprature(latitiude,longitude) -> str:
+    try:
+        response = requests.get(
+            f"https://api.openweathermap.org/data/2.5/weather?lat={latitiude}&lon={longitude}&units=metric&appid={API_KEY}"
+        )
+        response.raise_for_status
+    except:
+        if response.status_code != 200:
+            "Something went wrong with the weather API"
+            f"Status code is: " , {response.status_code()}
+    temperature = response.json()["main"]["temp"]
+    return str(temperature)
 
+def get_weather_condition(latitiude,longitude) -> str:
+    try:
+        response = requests.get(
+            f"https://api.openweathermap.org/data/2.5/weather?lat={latitiude}&lon={longitude}&units=metric&appid={API_KEY}"
+        )
+        response.raise_for_status
+    except:
+        if response.status_code != 200:
+            "Something went wrong with the weather API"
+            f"Status code is: " , {response.status_code()}
+    weather = response.json()["weather"][0]["main"]
+    return weather
 
-if __name__ == "__main__":
-    print(get_weather("58.5942", "16.1826"))
