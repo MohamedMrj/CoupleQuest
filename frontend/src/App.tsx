@@ -1,4 +1,6 @@
 import { useState } from "react";
+import AdventureForm from "./components/AdventureForm";
+import type { AdventureFormData } from "./components/AdventureForm";
 
 type Adventure = {
   activity: string;
@@ -11,7 +13,13 @@ function App() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  async function getAdventure() {
+  async function getAdventure(formData: AdventureFormData) {
+    console.log(formData);
+
+    console.log("Budget:", formData.budget);
+    console.log("Available hours:", formData.availableHours);
+    console.log("Mood:", formData.mood);
+
     setLoading(true);
     setError(null);
 
@@ -19,6 +27,7 @@ function App() {
       const response = await fetch("http://192.168.0.137:8000/adventure");
 
       const data = await response.json();
+
       setAdventure(data);
     } catch {
       setError("Could not get an adventure. Please try again.");
@@ -31,7 +40,8 @@ function App() {
     <div>
       <h1>CoupleQuest</h1>
 
-      <button onClick={getAdventure}>Give us an adventure</button>
+      <AdventureForm onSubmit={getAdventure} />
+
       {loading && (
         <div>
           <h2>Loading adventure...</h2>
@@ -48,6 +58,7 @@ function App() {
       {adventure && (
         <div>
           <h2>Your adventure</h2>
+
           <p>Activity: {adventure.activity}</p>
           <p>Food: {adventure.food}</p>
           <p>Budget: {adventure.budget} SEK</p>
